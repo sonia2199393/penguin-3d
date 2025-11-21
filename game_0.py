@@ -75,14 +75,13 @@ class Game(ShowBase):
         self.Keyboard.setH(200)
 
         self.songs = [
-            loader.loadSfx("among-us-role-reveal-sound"),
-            loader.loadSfx("cave-themeb4"),
-            loader.loadSfx("dry-fart"),
-            loader.loadSfx("jixaw-metal-pipe-falling-sound"),
-            loader.loadSfx("lobotomy-sound-effect"),
-            loader.loadSfx("mimimi-clash-royale"),
-            loader.loadSfx("smeshariki-pogonia"),
-            loader.loadSfx("tili-tili-bom"),
+            loader.loadSfx("sounds/among-us-role-reveal-sound.mp3"),
+            loader.loadSfx("sounds/cave-themeb4.mp3"),
+
+            loader.loadSfx("sounds/lobotomy-sound-effect.mp3"),
+            loader.loadSfx("sounds/mimimi-clash-royale.mp3"),
+            loader.loadSfx("sounds/smeshariki-pogonia.mp3"),
+            loader.loadSfx("sounds/tili-tili-bom.mp3"),
 
         ]
 
@@ -235,6 +234,9 @@ class Game(ShowBase):
         # прив’язуємо клавішу M
         self.accept("m", self.toggle_menu)
 
+        # прив’язуємо клавішу F
+        self.accept("f", self.toggle_music)
+
 
 
     #  Обробка клавіш
@@ -282,8 +284,24 @@ class Game(ShowBase):
 
         return Task.cont
 
+    def toggle_music(self):
+        # Якщо зараз грає - вимикаємо
+        if self.music_playing:
+            self.songs[self.current_song].stop()
+            self.music_playing = False
+            print("Музика вимкнена")
+        else:
+            # наступна пісня
+            self.current_song = (self.current_song + 1) % len(self.songs)
 
-# ⬇️⬇️⬇️
+            # вмикаємо пісню
+            self.songs[self.current_song].play()
+            self.music_playing = True
+            print(f"грає пісня №{self.current_song + 1}")
+
+
+
+    # ⬇️⬇️⬇️
     def toggle_menu(self):
         """Відкрити/закрити меню"""
         if self.menu_open:
